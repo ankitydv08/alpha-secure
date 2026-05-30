@@ -60,7 +60,7 @@ export async function POST(
       // Production: dispatch via QStash for true async execution
       const qstashBaseUrl = process.env.QSTASH_URL || "https://qstash.upstash.io";
       const response = await fetch(
-        `${qstashBaseUrl}/v2/publish/${encodeURIComponent(workerUrl)}`,
+        `${qstashBaseUrl}/v2/publish/${workerUrl}`,
         {
           method: "POST",
           headers: {
