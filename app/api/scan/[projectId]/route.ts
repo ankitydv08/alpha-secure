@@ -42,11 +42,10 @@ export async function POST(
       );
     }
 
-    // Use the actual request URL to determine the host, which ensures QStash 
-    // always gets the correct public URL (even if NEXT_PUBLIC_APP_URL is wrong).
-    const host = `${req.nextUrl.protocol}//${req.nextUrl.host}`;
-    const workerUrl = `${host}/api/worker`;
     const isProduction = process.env.NODE_ENV === "production";
+    const protocol = isProduction ? "https:" : req.nextUrl.protocol;
+    const host = `${protocol}//${req.nextUrl.host}`;
+    const workerUrl = `${host}/api/worker`;
     const qstashToken = process.env.QSTASH_TOKEN;
 
     if (isProduction && qstashToken) {
@@ -77,10 +76,10 @@ export async function POST(
     }
 
     return NextResponse.json({ scanId: scan.id, message: "Scan started" });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Start scan error:", err);
     return NextResponse.json(
-      { error: "Failed to start scan. Please try again." },
+      { error: "Failed to start scan. Please try again.", details: err?.message || String(err) },
       { status: 500 }
     );
   }
