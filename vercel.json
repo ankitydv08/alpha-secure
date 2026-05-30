@@ -1,13 +1,3 @@
 {
-  "version": 2,
-  "env": {
-    "DATABASE_URL": "@securecheck-database-url",
-    "DIRECT_URL": "@securecheck-direct-url",
-    "UPSTASH_REDIS_REST_URL": "@securecheck-redis-url",
-    "UPSTASH_REDIS_REST_TOKEN": "@securecheck-redis-token",
-    "QSTASH_TOKEN": "@securecheck-qstash-token",
-    "QSTASH_CURRENT_SIGNING_KEY": "@securecheck-qstash-signing-key",
-    "QSTASH_NEXT_SIGNING_KEY": "@securecheck-qstash-next-signing-key",
-    "GEMINI_API_KEY": "@securecheck-gemini-api-key"
-  }
+  "version": 2
 }
