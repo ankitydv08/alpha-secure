@@ -4,6 +4,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Shield, CheckCircle, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ScanProgress {
   stage: string;
@@ -116,8 +117,13 @@ export default function ScanPage({ params }: { params: Promise<{ scanId: string 
         </Link>
 
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          {failed ? (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{ textAlign: "center", marginBottom: 48 }}
+        >
+          <AnimatePresence mode="wait">
+            {failed ? (
             <>
               <div
                 style={{
@@ -193,11 +199,19 @@ export default function ScanPage({ params }: { params: Promise<{ scanId: string 
               </p>
             </>
           )}
-        </div>
+          </AnimatePresence>
+        </motion.div>
 
         {/* Progress bar */}
-        {!failed && status !== "COMPLETED" && (
-          <div className="glass-card" style={{ padding: 32 }}>
+        <AnimatePresence>
+          {!failed && status !== "COMPLETED" && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="glass-card" 
+              style={{ padding: 32 }}
+            >
             {/* Overall progress bar */}
             <div style={{ marginBottom: 32 }}>
               <div
@@ -216,15 +230,22 @@ export default function ScanPage({ params }: { params: Promise<{ scanId: string 
               </div>
               <div
                 style={{
-                  height: 6,
-                  background: "rgba(255, 255, 255, 0.06)",
-                  borderRadius: 3,
+                  height: 12,
+                  background: "rgba(0,0,0,0.4)",
+                  boxShadow: "var(--shadow-3d-recessed)",
+                  borderRadius: 6,
                   overflow: "hidden",
+                  padding: 2
                 }}
               >
                 <div
                   className="progress-bar"
-                  style={{ width: `${progress.percent}%`, height: "100%" }}
+                  style={{ 
+                    width: `${progress.percent}%`, 
+                    height: "100%", 
+                    borderRadius: 4,
+                    boxShadow: "var(--shadow-3d-btn)" 
+                  }}
                 />
               </div>
             </div>
@@ -324,8 +345,9 @@ export default function ScanPage({ params }: { params: Promise<{ scanId: string 
               <span>Scan ID</span>
               <span>{scanId}</span>
             </div>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
       </div>
 
       <style>{`

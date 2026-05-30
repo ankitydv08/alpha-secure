@@ -14,6 +14,7 @@ import {
   CheckCircle,
   Loader2,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function UploadPage() {
   const router = useRouter();
@@ -98,7 +99,12 @@ export default function UploadPage() {
       }}
     >
       {/* Header */}
-      <div style={{ width: "100%", maxWidth: 620 }}>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{ width: "100%", maxWidth: 620 }}
+      >
         <Link
           href="/"
           style={{
@@ -147,7 +153,13 @@ export default function UploadPage() {
         </div>
 
         {/* Upload Card */}
-        <div className="glass-card" style={{ padding: 32, marginBottom: 20 }}>
+        <motion.div 
+          className="glass-card" 
+          style={{ padding: 32, marginBottom: 20 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           {/* Dropzone */}
           <div
             {...getRootProps()}
@@ -335,7 +347,7 @@ export default function UploadPage() {
               </>
             )}
           </button>
-        </div>
+        </motion.div>
 
         {/* Info notes */}
         <div
@@ -359,7 +371,7 @@ export default function UploadPage() {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }

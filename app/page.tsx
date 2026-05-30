@@ -1,43 +1,51 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Shield, Zap, Eye, Lock, ArrowRight, CheckCircle, AlertTriangle, Code2, Package } from "lucide-react";
+import { motion } from "framer-motion";
 
 const FEATURES = [
   {
     icon: Eye,
+    image: "/images/secret_detection.png",
     title: "Secret Detection",
-    description: "Finds hardcoded API keys, passwords, and tokens before they leak to GitHub.",
+    description: "Finds hardcoded API keys, passwords, and tokens before they leak to GitHub. This is critical because exposed secrets are the number one cause of cloud breaches. Protecting your credentials prevents catastrophic unauthorized access to your databases and services.",
     color: "#ef4444",
   },
   {
     icon: Code2,
+    image: "/images/code_pattern.png",
     title: "Code Pattern Analysis",
-    description: "Detects eval(), SQL injection risks, XSS vectors, and command injection.",
+    description: "Detects eval(), SQL injection risks, XSS vectors, and command injection. Identifying these insecure code patterns is essential to stop attackers from executing malicious scripts on your server. Proactive pattern analysis secures your application's foundation and user data.",
     color: "#f97316",
   },
   {
     icon: Lock,
+    image: "/images/express_security.png",
     title: "Express.js Security",
-    description: "Checks for missing Helmet, rate limiting, CORS misconfig, and weak JWT secrets.",
+    description: "Checks for missing Helmet, rate limiting, CORS misconfig, and weak JWT secrets. Express apps are vulnerable by default if not properly configured with security headers. Enforcing these server-level protections ensures your backend is resilient against automated attacks.",
     color: "#a855f7",
   },
   {
     icon: Package,
+    image: "/images/dependency_audit.png",
     title: "Dependency Audit",
-    description: "Runs npm audit to find CVEs in your packages and suggests safe versions.",
+    description: "Runs npm audit to find CVEs in your packages and suggests safe versions. Software supply chains are a major attack vector for modern web applications. Keeping your dependencies up-to-date and vulnerability-free is crucial for maintaining compliance and trust.",
     color: "#06b6d4",
   },
   {
     icon: Zap,
+    image: "/images/ai_explanations.png",
     title: "AI Explanations",
-    description: "Gemini AI translates technical findings into plain English any developer can understand.",
+    description: "Gemini AI translates technical findings into plain English any developer can understand. This bridges the gap between complex security jargon and actionable insights. It empowers your entire engineering team to confidently understand and fix vulnerabilities fast.",
     color: "#10b981",
   },
   {
     icon: Shield,
+    image: "/images/security_score.png",
     title: "Security Score",
-    description: "Get a 0–100 security score with letter grade and actionable improvement plan.",
+    description: "Get a 0–100 security score with letter grade and actionable improvement plan. This high-level metric is vital for tracking your security posture over time. It gives stakeholders immediate visibility into your application's health and prioritizes what needs fixing first.",
     color: "#eab308",
   },
 ];
@@ -88,16 +96,28 @@ export default function LandingPage() {
                 width: 34,
                 height: 34,
                 borderRadius: 8,
-                background: "linear-gradient(135deg, #7c3aed, #06b6d4)",
+                background: "rgba(234, 179, 8, 0.1)",
+                border: "1px solid rgba(234, 179, 8, 0.2)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                fontWeight: 900,
+                fontSize: 16,
+                letterSpacing: "-0.05em",
               }}
             >
-              <Shield size={18} color="white" />
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #fef08a, #eab308)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                BX
+              </span>
             </div>
             <span style={{ fontSize: 18, fontWeight: 700, color: "var(--text-primary)" }}>
-              SecureCheck
+              BegXSecure
             </span>
           </div>
 
@@ -109,41 +129,31 @@ export default function LandingPage() {
       </nav>
 
       {/* ── Hero ── */}
-      <section
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
         style={{
           maxWidth: 1000,
           margin: "0 auto",
           padding: "100px 24px 80px",
           textAlign: "center",
+          position: "relative",
+          zIndex: 10
         }}
       >
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            background: "rgba(124, 58, 237, 0.1)",
-            border: "1px solid rgba(124, 58, 237, 0.2)",
-            borderRadius: 100,
-            padding: "6px 16px",
-            marginBottom: 32,
-            fontSize: 13,
-            color: "#a78bfa",
-            fontWeight: 500,
-          }}
-        >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#a855f7",
-              display: "inline-block",
-            }}
-            className="pulse-dot"
-          />
-          AI-Assisted Security Review Platform
-        </div>
+        {/* Floating background elements */}
+        <motion.div
+          animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          style={{ position: "absolute", top: 40, left: -40, width: 200, height: 200, background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%)", zIndex: -1 }}
+        />
+        <motion.div
+          animate={{ y: [0, 30, 0], rotate: [0, -10, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          style={{ position: "absolute", bottom: -20, right: -60, width: 300, height: 300, background: "radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)", zIndex: -1 }}
+        />
+
 
         <h1
           style={{
@@ -209,43 +219,94 @@ export default function LandingPage() {
             )
           )}
         </div>
-      </section>
+      </motion.section>
 
       {/* ── Features grid ── */}
-      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 100px" }}>
-        <div
+      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 100px", perspective: 1000 }}>
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          }}
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: 20,
+            display: "flex",
+            flexDirection: "column",
+            gap: 120,
+            paddingTop: 40,
           }}
         >
-          {FEATURES.map(({ icon: Icon, title, description, color }) => (
-            <div key={title} className="glass-card" style={{ padding: 28 }}>
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 12,
-                  background: `${color}18`,
-                  border: `1px solid ${color}30`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 16,
-                }}
-              >
-                <Icon size={20} color={color} />
+          {FEATURES.map(({ icon: Icon, image, title, description, color }, index) => {
+            const isEven = index % 2 === 0;
+            return (
+            <motion.div 
+              key={title} 
+              variants={{
+                hidden: { opacity: 0, y: 40, rotateX: 5 },
+                show: { opacity: 1, y: 0, rotateX: 0, transition: { type: "spring", stiffness: 200, damping: 24 } }
+              }}
+              style={{
+                display: "flex",
+                flexDirection: isEven ? "row" : "row-reverse",
+                alignItems: "center",
+                gap: "8vw",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* Illustration Side */}
+              <div style={{ flex: "1 1 300px", display: "flex", justifyContent: "center" }}>
+                <div 
+                  className="glass-card" 
+                  style={{ 
+                    width: "100%", 
+                    maxWidth: 320, 
+                    aspectRatio: "1/1", 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center",
+                    background: `linear-gradient(135deg, ${color}10 0%, rgba(0,0,0,0) 100%)`,
+                    position: "relative",
+                    overflow: "hidden"
+                  }}
+                >
+                  <motion.div 
+                    animate={{ y: [0, -15, 0], scale: [1, 1.05, 1], rotate: [0, 5, 0] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    style={{
+                       position: "absolute",
+                       width: "70%",
+                       height: "70%",
+                       background: color,
+                       filter: "blur(70px)",
+                       opacity: 0.15
+                    }}
+                  />
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    whileHover={{ scale: 1.1, rotateY: 10, y: 0 }}
+                    style={{ zIndex: 10, perspective: 1000, position: "relative", width: 160, height: 160, borderRadius: "50%", overflow: "hidden", border: `3px solid ${color}40` }}
+                  >
+                    <Image src={image} alt={title} fill style={{ objectFit: "cover" }} />
+                  </motion.div>
+                </div>
               </div>
-              <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8, color: "var(--text-primary)" }}>
-                {title}
-              </h3>
-              <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.65 }}>
-                {description}
-              </p>
-            </div>
-          ))}
-        </div>
+
+              {/* Text Side */}
+              <div style={{ flex: "1 1 300px", textAlign: isEven ? "left" : "right" }}>
+                <h3 style={{ fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 800, marginBottom: 16, color: "var(--text-primary)", lineHeight: 1.2 }}>
+                  {title}
+                </h3>
+                <p style={{ fontSize: 17, color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 500, marginLeft: isEven ? 0 : "auto" }}>
+                  {description}
+                </p>
+              </div>
+            </motion.div>
+            );
+          })}
+        </motion.div>
       </section>
 
       {/* ── What we check ── */}
@@ -280,7 +341,11 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <div
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
           className="glass-card"
           style={{ padding: 28, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
         >
@@ -303,7 +368,7 @@ export default function LandingPage() {
               {check}
             </div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* ── How it works ── */}
@@ -395,8 +460,32 @@ export default function LandingPage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
-          <Shield size={14} color="#7c3aed" />
-          <span style={{ fontWeight: 600, color: "var(--text-secondary)" }}>SecureCheck</span>
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: 4,
+              background: "rgba(234, 179, 8, 0.1)",
+              border: "1px solid rgba(234, 179, 8, 0.2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 900,
+              fontSize: 10,
+              letterSpacing: "-0.05em",
+            }}
+          >
+            <span
+              style={{
+                background: "linear-gradient(135deg, #fef08a, #eab308)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              BX
+            </span>
+          </div>
+          <span style={{ fontWeight: 600, color: "var(--text-secondary)" }}>BegXSecure</span>
         </div>
         <p>AI-Assisted Security Review — Not a guarantee of security.</p>
       </footer>

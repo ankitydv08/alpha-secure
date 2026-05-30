@@ -2,6 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Shield,
   AlertTriangle,
@@ -18,6 +19,7 @@ import {
   Eye,
   Lock,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -94,7 +96,7 @@ function ScoreGauge({ score }: { score: number }) {
             strokeDashoffset={dashOffset}
             strokeLinecap="round"
             transform="rotate(-90 70 70)"
-            style={{ transition: "stroke-dashoffset 1s ease, stroke 0.5s ease", filter: `drop-shadow(0 0 8px ${grade.color}60)` }}
+            style={{ transition: "stroke-dashoffset 1.5s cubic-bezier(0.25, 0.8, 0.25, 1), stroke 0.5s ease", filter: `drop-shadow(0 0 15px ${grade.color}80) drop-shadow(0 0 30px ${grade.color}40)` }}
           />
         </svg>
         <div
@@ -239,11 +241,17 @@ function FindingCard({ finding }: { finding: Finding }) {
       </button>
 
       {/* Expanded content */}
+      <AnimatePresence>
       {expanded && (
-        <div
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
           style={{
             padding: "0 20px 20px",
             borderTop: "1px solid var(--border)",
+            overflow: "hidden"
           }}
         >
           {/* AI Explanation */}
@@ -383,8 +391,9 @@ function FindingCard({ finding }: { finding: Finding }) {
               </div>
             </div>
           )}
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -511,8 +520,32 @@ export default function ResultsPage({ params }: { params: Promise<{ scanId: stri
         </Link>
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Shield size={16} color="#7c3aed" />
-          <span style={{ fontWeight: 700, fontSize: 15 }}>SecureCheck</span>
+          <div
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: 6,
+              background: "rgba(234, 179, 8, 0.1)",
+              border: "1px solid rgba(234, 179, 8, 0.2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 900,
+              fontSize: 12,
+              letterSpacing: "-0.05em",
+            }}
+          >
+            <span
+              style={{
+                background: "linear-gradient(135deg, #fef08a, #eab308)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              BX
+            </span>
+          </div>
+          <span style={{ fontWeight: 700, fontSize: 15 }}>BegXSecure</span>
         </div>
 
         <div
@@ -696,19 +729,40 @@ export default function ResultsPage({ params }: { params: Promise<{ scanId: stri
               </p>
             </div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <motion.div 
+              style={{ display: "flex", flexDirection: "column", gap: 10 }}
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1, transition: { staggerChildren: 0.08 } }
+              }}
+            >
+              <AnimatePresence mode="popLayout">
               {filteredFindings.map((f) => (
-                <FindingCard key={f.id} finding={f} />
+                <motion.div 
+                  key={f.id}
+                  layout
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                >
+                  <FindingCard finding={f} />
+                </motion.div>
               ))}
+              </AnimatePresence>
               {filteredFindings.length === 0 && (
-                <div
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   className="glass-card"
                   style={{ padding: 24, textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}
                 >
                   No {activeFilter.toLowerCase()} severity findings.
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
           )}
         </div>
 
