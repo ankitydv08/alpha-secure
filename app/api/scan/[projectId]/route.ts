@@ -46,7 +46,7 @@ export async function POST(
     const protocol = isProduction ? "https:" : req.nextUrl.protocol;
     const host = `${protocol}//${req.nextUrl.host}`;
     const workerUrl = `${host}/api/worker`;
-    const qstashToken = process.env.QSTASH_TOKEN;
+    const qstashToken = process.env.QSTASH_TOKEN?.replace(/^["']|["']$/g, '').trim();
 
     if (isProduction && qstashToken) {
       // Production: dispatch via QStash for true async execution
