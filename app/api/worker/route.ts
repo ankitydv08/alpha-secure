@@ -3,7 +3,7 @@ import { redis } from "@/lib/redis";
 import { runScanPipeline } from "@/lib/scanPipeline";
 
 export const runtime = "nodejs";
-export const maxDuration = 300; // 5 minutes max for Vercel Pro, 60s for Hobby
+export const maxDuration = 60; // 60s max for Hobby
 
 /**
  * QStash worker endpoint — receives { scanId } and runs the full scan pipeline.

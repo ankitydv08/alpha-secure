@@ -48,31 +48,31 @@ export async function runScanPipeline(
     // ── Stage 3: Security Scanning ───────────────────────────────────────────
     await setScanProgress(scanId, "scanning", "Running security analysis engines...", 45);
 
-    const [secretFindings, codeFindings, customFindings, npmFindings] =
+    const [secretFindings, codeFindings, customFindings] =
       await Promise.all([
         Promise.resolve(runSecretScanner(fileMap)),
         Promise.resolve(runCodePatternScanner(fileMap)),
         Promise.resolve(runCustomRuleEngine(fileMap)),
-        runNpmAudit(extractedDir),
+        // Vercel serverless doesn't have npm installed, so we must disable this
+        // runNpmAudit(extractedDir),
       ]);
 
     const allFindings: ScanFinding[] = [
       ...secretFindings,
       ...codeFindings,
       ...customFindings,
-      ...npmFindings,
     ];
 
     // ── Stage 4: AI Explanation ───────────────────────────────────────────────
     await setScanProgress(scanId, "ai_analysis", "Generating AI explanations...", 70);
 
-    // Only enrich top 10 findings with AI to control latency & cost
+    // Only enrich top 2 findings with AI to prevent Vercel 60s serverless timeouts
     const priorityFindings = allFindings
       .sort((a, b) => {
         const order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3, INFO: 4 };
         return order[a.severity] - order[b.severity];
       })
-      .slice(0, 10);
+      .slice(0, 2);
 
     const enrichedFindings = await Promise.all(
       allFindings.map(async (finding) => {
