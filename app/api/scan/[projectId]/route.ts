@@ -49,6 +49,11 @@ export async function POST(
     const qstashToken = process.env.QSTASH_TOKEN?.replace(/^["']|["']$/g, '').trim();
 
     if (isProduction && qstashToken) {
+      const expectedToken = "eyJVc2VySUQiOiJlNGQzODViOC1hZGI0LTQwN2EtOWQ2Yy01ZGQzZDI3YTdjMWUiLCJQYXNzd29yZCI6IjFiYmRhNWQyYjBhNTRmY2ViNjhiNmE0ODFkN2FlNDQ4In0=";
+      if (qstashToken !== expectedToken) {
+        throw new Error(`CRITICAL DIAGNOSTIC: Token loaded in Vercel doesn't match! Vercel token length: ${qstashToken.length}. Starts with: ${qstashToken.substring(0, 15)}...`);
+      }
+      
       // Production: dispatch via QStash for true async execution
       const qstashBaseUrl = process.env.QSTASH_URL || "https://qstash.upstash.io";
       const response = await fetch(
