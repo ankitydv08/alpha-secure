@@ -18,8 +18,8 @@ export async function POST(req: NextRequest) {
       if (!signature) {
         // Allow direct calls from our own scan trigger in dev
         const origin = req.headers.get("origin") || req.headers.get("referer") || "";
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-        if (!origin.startsWith(appUrl) && process.env.NODE_ENV === "production") {
+        const host = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : `https://${process.env.VERCEL_URL}`) || "http://localhost:3000";
+        if (!origin.startsWith(host) && process.env.NODE_ENV === "production") {
           return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
       }

@@ -43,8 +43,8 @@ export async function POST(
     }
 
     // Call our own worker endpoint via QStash (production) or directly (development)
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const workerUrl = `${appUrl}/api/worker`;
+    const host = process.env.NEXT_PUBLIC_APP_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : `https://${process.env.VERCEL_URL}`) || "http://localhost:3000";
+    const workerUrl = `${host}/api/worker`;
     const isProduction = process.env.NODE_ENV === "production";
     const qstashToken = process.env.QSTASH_TOKEN;
 
